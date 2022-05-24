@@ -30,12 +30,18 @@ const (
 )
 
 const (
-	StoredGameKey = "StoredGame-value-"
+	StoredGameKey          = "StoredGame-value-"
 	StoredGameEventKey     = "NewGameCreated"
 	StoredGameEventCreator = "Creator"
 	StoredGameEventIndex   = "Index"
 	StoredGameEventRed     = "Red"
 	StoredGameEventBlack   = "Black"
+)
+
+const (
+	RejectGameEventKey     = "GameRejected"
+	RejectGameEventCreator = "Creator"
+	RejectGameEventIdValue = "IdValue"
 )
 
 const (

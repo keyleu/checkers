@@ -6,8 +6,8 @@ import (
 
 	"github.com/alice/checkers/x/checkers"
 	"github.com/alice/checkers/x/checkers/keeper"
-	"github.com/alice/checkers/x/checkers/types"
 	"github.com/alice/checkers/x/checkers/rules"
+	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
@@ -93,6 +93,7 @@ func TestPlayMoveSavedGame(t *testing.T) {
 		Turn:    "r",
 		Red:     bob,
 		Black:   carol,
+		MoveCount: uint64(1),
 	}, game1)
 }
 
@@ -211,6 +212,7 @@ func TestPlayMove2SavedGame(t *testing.T) {
 		Turn:    "b",
 		Red:     bob,
 		Black:   carol,
+		MoveCount: uint64(2),
 	}, game1)
 }
 
@@ -290,5 +292,6 @@ func TestPlayMove3SavedGame(t *testing.T) {
 		Turn:    "r",
 		Red:     bob,
 		Black:   carol,
+		MoveCount: uint64(3),
 	}, game1)
 }

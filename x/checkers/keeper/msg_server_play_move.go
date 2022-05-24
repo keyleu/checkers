@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
+	rules "github.com/alice/checkers/x/checkers/rules"
 	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	rules "github.com/alice/checkers/x/checkers/rules"
 )
 
 func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*types.MsgPlayMoveResponse, error) {
@@ -18,7 +18,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	if !found {
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "game not found %s", msg.IdValue)
 	}
-	
+
 	// Is it an expected player?
 	isRed := strings.Compare(storedGame.Red, msg.Creator) == 0
 	isBlack := strings.Compare(storedGame.Black, msg.Creator) == 0
@@ -32,7 +32,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	} else {
 		player = rules.BLACK_PLAYER
 	}
-	
+
 	// Is it the player's turn?
 	game, err := storedGame.ParseGame()
 	if err != nil {
@@ -41,7 +41,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	if !game.TurnIs(player) {
 		return nil, types.ErrNotPlayerTurn
 	}
-	
+
 	// Do it
 	captured, moveErr := game.Move(
 		rules.Pos{
@@ -56,12 +56,13 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 	if moveErr != nil {
 		return nil, sdkerrors.Wrapf(types.ErrWrongMove, moveErr.Error())
 	}
-	
+	storedGame.MoveCount++
+
 	// Save for the next play move
 	storedGame.Game = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
 	k.Keeper.SetStoredGame(ctx, storedGame)
-	
+
 	// What to emit
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(sdk.EventTypeMessage,
@@ -74,7 +75,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 			sdk.NewAttribute(types.PlayMoveEventWinner, game.Winner().Color),
 		),
 	)
-	
+
 	// What to inform
 	return &types.MsgPlayMoveResponse{
 		IdValue:   msg.IdValue,
