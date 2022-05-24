@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/alice/checkers/x/checkers/types"
 	rules "github.com/alice/checkers/x/checkers/rules"
+	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -31,10 +31,10 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		return nil, err
 	}
 	k.Keeper.SetStoredGame(ctx, storedGame)
-	
+
 	nextGame.IdValue++
 	k.Keeper.SetNextGame(ctx, nextGame)
-	
+
 	return &types.MsgCreateGameResponse{
 		IdValue: newIndex,
 	}, nil
