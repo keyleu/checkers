@@ -6,7 +6,6 @@ import (
 
 	"github.com/alice/checkers/x/checkers"
 	"github.com/alice/checkers/x/checkers/keeper"
-	"github.com/alice/checkers/x/checkers/rules"
 	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
@@ -40,7 +39,7 @@ func TestPlayMove(t *testing.T) {
 		IdValue:   "1",
 		CapturedX: -1,
 		CapturedY: -1,
-		Winner:    rules.NO_PLAYER.Color,
+		Winner:    "*",
 	}, *playMoveResponse)
 }
 
@@ -64,7 +63,7 @@ func TestPlayMoveSameBlackRed(t *testing.T) {
 		IdValue:   "1",
 		CapturedX: -1,
 		CapturedY: -1,
-		Winner:    rules.NO_PLAYER.Color,
+		Winner:    "*",
 	}, *playMoveResponse)
 }
 
@@ -100,6 +99,7 @@ func TestPlayMoveSavedGame(t *testing.T) {
 		BeforeId:  "-1",
 		AfterId:   "-1",
 		Deadline:  types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
+		Winner:    "*",
 	}, game1)
 }
 
@@ -154,7 +154,7 @@ func TestPlayMoveEmitted(t *testing.T) {
 		{Key: "IdValue", Value: "1"},
 		{Key: "CapturedX", Value: "-1"},
 		{Key: "CapturedY", Value: "-1"},
-		{Key: "Winner", Value: "NO_PLAYER"},
+		{Key: "Winner", Value: "*"},
 	}, event.Attributes[6:])
 }
 
@@ -181,7 +181,7 @@ func TestPlayMove2(t *testing.T) {
 		IdValue:   "1",
 		CapturedX: -1,
 		CapturedY: -1,
-		Winner:    rules.NO_PLAYER.Color,
+		Winner:    "*",
 	}, *playMoveResponse)
 }
 
@@ -225,6 +225,7 @@ func TestPlayMove2SavedGame(t *testing.T) {
 		BeforeId:  "-1",
 		AfterId:   "-1",
 		Deadline:  types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
+		Winner:    "*",
 	}, game1)
 }
 
@@ -259,7 +260,7 @@ func TestPlayMove3(t *testing.T) {
 		IdValue:   "1",
 		CapturedX: 1,
 		CapturedY: 4,
-		Winner:    rules.NO_PLAYER.Color,
+		Winner:    "*",
 	}, *playMoveResponse)
 }
 
@@ -311,5 +312,6 @@ func TestPlayMove3SavedGame(t *testing.T) {
 		BeforeId:  "-1",
 		AfterId:   "-1",
 		Deadline:  types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
+		Winner:    "*",
 	}, game1)
 }

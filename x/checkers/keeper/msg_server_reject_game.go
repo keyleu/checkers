@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 	"strings"
-
+	rules "github.com/alice/checkers/x/checkers/rules"
 	"github.com/alice/checkers/x/checkers/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -17,6 +17,11 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 		return nil, sdkerrors.Wrapf(types.ErrGameNotFound, "game not found %s", msg.IdValue)
 	}
 
+	// Is the game already won? Here, likely because it is forfeited.
+	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
+		return nil, types.ErrGameFinished
+	}
+	
 	// Is it an expected player? And did the player already play?
 	if strings.Compare(storedGame.Red, msg.Creator) == 0 {
 		if 1 < storedGame.MoveCount {
