@@ -3,10 +3,11 @@ package keeper
 import (
 	"context"
 	"strings"
+
 	rules "github.com/alice/checkers/x/checkers/rules"
 	"github.com/alice/checkers/x/checkers/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
 func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (*types.MsgRejectGameResponse, error) {
@@ -21,7 +22,7 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	if storedGame.Winner != rules.PieceStrings[rules.NO_PLAYER] {
 		return nil, types.ErrGameFinished
 	}
-	
+
 	// Is it an expected player? And did the player already play?
 	if strings.Compare(storedGame.Red, msg.Creator) == 0 {
 		if 1 < storedGame.MoveCount {
@@ -34,6 +35,9 @@ func (k msgServer) RejectGame(goCtx context.Context, msg *types.MsgRejectGame) (
 	} else {
 		return nil, types.ErrCreatorNotPlayer
 	}
+
+	// Refund wager to black player if red rejects after black played
+	k.Keeper.MustRefundWager(ctx, &storedGame)
 
 	// Remove from the FIFO
 	nextGame, found := k.Keeper.GetNextGame(ctx)
