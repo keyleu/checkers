@@ -54,6 +54,7 @@ const (
 	StoredGameEventRed     = "Red"
 	StoredGameEventBlack   = "Black"
 	StoredGameEventWager   = "Wager"
+	StoredGameEventToken   = "Token"
 )
 
 const (

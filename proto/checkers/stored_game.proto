@@ -3,8 +3,6 @@ package alice.checkers.checkers;
 
 option go_package = "github.com/alice/checkers/x/checkers/types";
 
-import "gogoproto/gogo.proto";
-
 message StoredGame {
   string creator = 1;
   string index = 2;
@@ -18,4 +16,5 @@ message StoredGame {
   string deadline = 10;
   string winner = 11;
   uint64 wager = 12;
+  string token = 13; // Denomination of the wager.
 }
