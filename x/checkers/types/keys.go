@@ -47,6 +47,11 @@ const (
 )
 
 const (
+	LeaderboardWinnerLength = 100
+	DateAddedLayout         = DeadlineLayout
+)
+
+const (
 	StoredGameKey          = "StoredGame-value-"
 	StoredGameEventKey     = "NewGameCreated"
 	StoredGameEventCreator = "Creator"
@@ -76,4 +81,12 @@ const (
 	ForfeitGameEventKey     = "GameForfeited"
 	ForfeitGameEventIdValue = "IdValue"
 	ForfeitGameEventWinner  = "Winner"
+)
+
+const (
+	PlayerInfoKey = "PlayerInfo-value-"
+)
+
+const (
+	LeaderboardKey = "Leaderboard-value-"
 )

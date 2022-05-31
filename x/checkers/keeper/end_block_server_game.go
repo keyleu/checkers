@@ -42,18 +42,22 @@ func (k Keeper) ForfeitExpiredGames(goCtx context.Context) {
 		if deadline.Before(ctx.BlockTime()) {
 			// Game is past deadline
 			k.RemoveFromFifo(ctx, &storedGame, &nextGame)
-			if storedGame.MoveCount <= 1 {
-				// No point in keeping a game that was never really played
+			if storedGame.MoveCount == 0 {
+				storedGame.Winner = rules.NO_PLAYER.Color
+				// No point in keeping a game that was never played
 				k.RemoveStoredGame(ctx, storedGameId)
-				if storedGame.MoveCount == 1 {
-					k.MustRefundWager(ctx, &storedGame)
-				}
 			} else {
 				storedGame.Winner, found = opponents[storedGame.Turn]
 				if !found {
 					panic(fmt.Sprintf(types.ErrCannotFindWinnerByColor.Error(), storedGame.Turn))
 				}
-				k.MustPayWinnings(ctx, &storedGame)
+				if storedGame.MoveCount <= 1 {
+					k.MustRefundWager(ctx, &storedGame)
+				} else {
+					k.MustPayWinnings(ctx, &storedGame)
+					winnerInfo, _ := k.MustRegisterPlayerForfeit(ctx, &storedGame)
+					k.MustAddToLeaderboard(ctx, winnerInfo)
+				}
 				k.SetStoredGame(ctx, storedGame)
 			}
 			ctx.EventManager().EmitEvent(

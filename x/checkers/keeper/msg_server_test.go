@@ -1,15 +1,14 @@
-package keeper_test
+package keeper
 
 import (
 	"context"
 	"testing"
 
-	"github.com/alice/checkers/x/checkers/keeper"
 	"github.com/alice/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
-	k, ctx := setupKeeper(t)
-	return keeper.NewMsgServerImpl(*k), sdk.WrapSDKContext(ctx)
+	keeper, ctx := setupKeeper(t)
+	return NewMsgServerImpl(*keeper), sdk.WrapSDKContext(ctx)
 }

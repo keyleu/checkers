@@ -1,4 +1,4 @@
-package keeper_test
+package keeper
 
 import (
 	"fmt"
@@ -7,11 +7,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/alice/checkers/x/checkers/keeper"
 	"github.com/alice/checkers/x/checkers/types"
 )
 
-func createNStoredGame(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.StoredGame {
+func createNStoredGame(keeper *Keeper, ctx sdk.Context, n int) []types.StoredGame {
 	items := make([]types.StoredGame, n)
 	for i := range items {
 		items[i].Creator = "any"
