@@ -1,0 +1,13 @@
+{
+    "devDependencies": {
+        "protoc": "1.0.4",
+        "ts-proto": "1.110.4"
+    },
+    "scripts": {
+        "proto-ts-gen": "./proto-ts-gen.sh"
+    },
+    "dependencies": {
+        "@cosmjs/stargate": "0.28.2",
+        "protobufjs": "6.10.2"
+    }
+}
